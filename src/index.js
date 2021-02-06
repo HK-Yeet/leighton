@@ -10,6 +10,9 @@ let dirs = {
   eventsDir: "events",
   featuresDir: "features",
 };
-new HKandler(client, dirs).setPrefix(prefix).setOwners(owners);
+new HKandler(client, dirs)
+  .setPrefix(prefix)
+  .setOwners(owners)
+  .setHelpDescription("Imagine needing help lmao");
 
 client.login(token);
