@@ -13,6 +13,7 @@ let dirs = {
 new HKandler(client, dirs)
   .setPrefix(prefix)
   .setOwners(owners)
+  .setDefaultCooldown(3) //5 is default
   .setHelpDescription("Imagine needing help lmao");
 
 client.login(token);
