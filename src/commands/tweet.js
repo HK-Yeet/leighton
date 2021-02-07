@@ -3,6 +3,8 @@ const moment = require('moment')
 const Discord = require('discord.js')
 const randomWords = require('random-words')
 const txtgen = require('txtgen')
+const emojis = require('../objects/emojis.json')
+const twitting = emojis.twitter
 
 module.exports = {
     name: "tweet",
@@ -53,7 +55,7 @@ module.exports = {
             ctx.fillStyle = '#ffffff';
             // Text Color
             ctx.fillText(sentence, canvas.width / 30, canvas.height / 3);
-            // The text will be Clefory is the best no cap(Change this to the words array)
+            // Write the message content
 
 
             ctx.font = '17px Arial';
@@ -91,10 +93,10 @@ module.exports = {
             const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'twitter.png')
             // The attachment
 
-            message.channel.send('<:Twitter:808067779395715113> Uploading your tweet!').then(message => {
+            message.channel.send(twitting + ' Uploading your tweet!').then(message => {
                 setTimeout(() => {
                     message.delete()
-                    message.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+                    message.channel.send(`${twitting} Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
                 }, 4000)
             })
             //Sends the attachment
@@ -111,7 +113,7 @@ module.exports = {
                 ogWord.forEach(letter => {
                     word += '`' + letter.split('').join(' ') + '` '
                 })
-                const msg = await message.channel.send(`<:Twitter:808067779395715113> **Twitter task!**:\nWrite the following word!\n${word}`)
+                const msg = await message.channel.send(`${twitting} **Twitter task!**:\nWrite the following word!\n${word}`)
                 try {
                     const collected = await message.channel.awaitMessages(filter, {
                         max: 1,
