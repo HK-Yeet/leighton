@@ -2,7 +2,7 @@ module.exports = {
   name: "example",
   aliases: ["ex"],
   cooldown: 5, //in seconds
-  onwerOnly: true, //set owners in index.js,
+  onwerOnly: true, //set owners in config.json,
   clientPerms: ["SEND_MESSAGES"],
   userPerms: ["KICK_MEMBERS"],
   minArgs: 3,
@@ -11,5 +11,6 @@ module.exports = {
     /*
         you can use execute as well
         */
+        message.channel.send('Worked')
   },
 };
