@@ -14,7 +14,6 @@ let dirs = {
 };
 
 const connect = (param = 'Empty') => {
-    console.log('2')
     switch(param.toLowerCase()) {
       case 'bot' :
         tok = support.token || process.env.TOKEN

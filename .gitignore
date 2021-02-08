@@ -1,1 +1,5 @@
+node_modules
 ignored.json
+/src/config.json
+/src/private
+src/commands/test.js
