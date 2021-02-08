@@ -20,13 +20,14 @@ const options = [
 ];
 
 const answers = ["a", "b", "a", "c", "a", "b"];
+let rand = Math.floor(Math.random() * questions.length);
 
 // so the question 0 the options will be the options 0 i added a comment for the correct answer please add more
 module.exports = {
   name: "trivia",
   cooldown: 20,
   callback: async (client, message, args, handler) => {
-    let rand = Math.floor(Math.random() * questions.length);
+    
     const filter = (m) =>
       !m.author.bot && m.content.toLowerCase() == answers[rand];
 
