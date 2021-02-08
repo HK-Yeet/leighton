@@ -14,6 +14,10 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "hkutilities": "^3.0.2",
-    "mongoose": "^5.11.15"
+    "moment": "^2.29.1",
+    "mongoose": "^5.11.15",
+    "random-words": "^1.1.1",
+    "txtgen": "^2.2.8",
+    "wordscramble": "^5.1.21"
   }
 }
