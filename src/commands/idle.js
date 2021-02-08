@@ -1,8 +1,8 @@
 const schema = require('../schemas/afk-schema')
-
+// :D
 module.exports = {
-    name: "afk",
-    aliases: ["idle"],
+    name: "idle",
+    aliases: ["afk"],
     cooldown: 30, //in seconds
     clientPerms: ["SEND_MESSAGES", "MANAGE_NICKNAMES"],
     callback: async (client, message, cannon, handler) => {
