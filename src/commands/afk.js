@@ -1,31 +1,5 @@
 const schema = require('../schemas/afk-schema')
 
-/*
-
-_id: {
-    type: String,
-    required: true,
-  },
-
-  server: {
-    type: String,
-    required: true,
-  },
-
-  reason: {
-    type: String,
-    required: true,
-  },
-
-  date: {
-    type: String,
-    required: true,
-  },
-
-
-
-*/
-
 module.exports = {
     name: "afk",
     aliases: ["idle"],
