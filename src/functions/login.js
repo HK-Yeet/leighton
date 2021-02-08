@@ -56,7 +56,7 @@ const connect = (param = 'Empty') => {
     .setDefaultCooldown(2) //5 is default 
     // NOTE FROM CANNON: i changed cooldown of 3 to 2
     .setHelpDescription("Imagine needing help lmao");
-    console.warn('READ THIS: ADD YOUR TEST BOT TOKEN / DB PATH TO private/ignored.json BEFORE SEND THE COMMIT AND REMOVE THE TOKEN / DB PATH FROM .ENV // I ADDED THAT FILE TO .gitignore')
+
 
     client.login(tok).catch((err) => console.log('\x1b[31mAre you sure you put your name in index.js?\x1b[0m   \n' + err))
     

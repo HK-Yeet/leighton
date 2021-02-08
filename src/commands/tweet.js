@@ -3,8 +3,6 @@ const moment = require('moment')
 const Discord = require('discord.js')
 const randomWords = require('random-words')
 const txtgen = require('txtgen')
-const emojis = require('../objects/emojis.json')
-const twitting = emojis.twitter
 
 module.exports = {
     name: "tweet",
@@ -12,17 +10,23 @@ module.exports = {
     cooldown: 60,
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler) => {
-        const text = args.join(' ')
         const filter = m => m.author.id === message.author.id
+        const author = message.author
         message.delete()
 
         async function sendTweet() {
+            let text = '';
+            let pog = 0;
             let length = 0;
-            let sentence;
-            do {
-                sentence = txtgen.sentence();
-                length = sentence.length
-            } while (length < 40 && length > 110)
+            let sentence = txtgen.sentence().split(' ')
+            for (i = 0; i < sentence.length; i++) {
+                if (pog < 6) text += `${sentence[i]} `
+                else {
+                    text += `${sentence[i]}\n`
+                    pog = 0
+                }
+                pog++
+            }
             let user = message.author
             //The author change this
             let random = Math.floor(Math.random() * 100) + 1
@@ -54,8 +58,8 @@ module.exports = {
             // Text font 
             ctx.fillStyle = '#ffffff';
             // Text Color
-            ctx.fillText(sentence, canvas.width / 30, canvas.height / 3);
-            // Write the message content
+            ctx.fillText(text, canvas.width / 30, canvas.height / 3);
+            // The text will be Clefory is the best no cap(Change this to the words array)
 
 
             ctx.font = '17px Arial';
@@ -90,45 +94,77 @@ module.exports = {
             // Ignore this dont change
             ctx.strokeText(random, number, canvas.height / 1.221);
             // Ignore this dont change
-            const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'twitter.png')
+            const attachment = await new Discord.MessageAttachment(canvas.toBuffer(), 'twitter.png')
             // The attachment
 
-            message.channel.send(twitting + ' Uploading your tweet!').then(message => {
-                setTimeout(() => {
-                    message.delete()
-                    message.channel.send(`${twitting} Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+            message.channel.send('<:Twitter:808067779395715113> Uploading your tweet!').then(msg => {
+                setTimeout( async () => {
+                    msg.delete()
+     
+                    const message = await msg.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+                    const cannon = (message.attachments).array();
+                    const url = cannon[0].url
+
+                    //console.log(url)
+                    setTimeout(() => {
+                        const randomPog = Math.floor(Math.random() * 10)
+                        console.log(randomPog)
+                        if (randomPog < 7) {
+                            const subsGain = Math.floor(Math.random() * 100)
+                            message.channel.send(`${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`)
+                        } else if (randomPog >= 7) {
+                            const subsLoss = Math.floor(Math.random() * 30)
+                            message.channel.send(`${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`)
+                        }
+                    }, 10000)
                 }, 4000)
             })
             //Sends the attachment
         }
 
-        const randomGame = Math.floor(Math.random() * 1)
+        const randomGame = `${Math.floor(Math.random() * 2)}`
 
-        switch (randomGame) {
-            case 0:
-                const ogWord = randomWords({
-                    exactly: 1
+        if (randomGame === '0') {
+            const ogWord = randomWords({
+                exactly: 1
+            })
+            let word = '';
+            ogWord.forEach(letter => {
+                word += '`' + letter.split('').join(' ') + '` '
+            })
+            const msg = await message.channel.send(`<:Twitter:808067779395715113> **Twitter task!**:\nWrite the following word!\n${word}`)
+            try {
+                const collected = await message.channel.awaitMessages(filter, {
+                    max: 1,
+                    time: 5000,
+                    errors: ['time']
                 })
-                let word = '';
-                ogWord.forEach(letter => {
-                    word += '`' + letter.split('').join(' ') + '` '
+                if (collected.first().content.toLowerCase() === ogWord.join(' ')) {
+                    msg.delete()
+                    collected.first().delete()
+                    sendTweet()
+                } else return message.channel.send('You lose!')
+            } catch (ex) {
+                return message.channel.send('Time\'s up!')
+            }
+        } else if (randomGame === '1') {
+            const msg1 = await message.channel.send('<:Twitter:808067779395715113> **Twitter task!**:\nWrite the name of this server\'s owner!')
+            try {
+                const collected1 = await message.channel.awaitMessages(filter, {
+                    max: 1,
+                    time: 5000,
+                    errors: ['time']
                 })
-                const msg = await message.channel.send(`${twitting} **Twitter task!**:\nWrite the following word!\n${word}`)
-                try {
-                    const collected = await message.channel.awaitMessages(filter, {
-                        max: 1,
-                        time: 5000,
-                        errors: ['time']
-                    })
-                    if (collected.first().content === ogWord.join(' ')) {
-                        msg.delete()
-                        collected.first().delete()
-                        sendTweet()
-                    }
-                    else return message.channel.send('You lose!')
-                } catch (ex) {
-                    message.channel.send('Time\'s up!')
-                }
+                const owner = await message.guild.members.fetch(message.guild.ownerID)
+                if (collected1.first().content.toLowerCase() === owner.displayName.toLowerCase() || collected1.first().content.toLowerCase() === owner.user.username.toLowerCase()) {
+                    msg1.delete()
+                    collected1.first().delete()
+                    sendTweet()
+                } else return message.channel.send('You lose!')
+            } catch (ex) {
+                console.log(ex)
+                return message.channel.send('Time\'s up!')
+            }
         }
     },
 };
