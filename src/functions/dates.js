@@ -1,6 +1,6 @@
 // Converting dates to min sec hours and days
 // I HAVEN'T FINISHED THIS YET
-const converter = (date1, date2 = null, decimals = null, action = '+') => {
+const convert = (date1, date2 = null, decimals = null, action = '+') => {
 
     if(date2 == null) {
         let number = dat1.getTime().catch(() => { return console.warn(date1 + `isn't a date, received ` + typeof date1) } )
@@ -31,3 +31,4 @@ const converter = (date1, date2 = null, decimals = null, action = '+') => {
 
 }
 
+module.exports = convert
