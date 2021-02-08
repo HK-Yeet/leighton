@@ -1,6 +1,6 @@
 require('dotenv').config({ path: './src/private/.env' })
 const mongoose = require('mongoose')
-let user = null // 'clefory' / 'cannon' / 'bot' / null
+let user = 'cannon' // 'clefory' / 'cannon' / 'bot' / null
 if(user == null) user = 'a'
 let mongoPath;
 let messages = require('../objects/messages.json')
