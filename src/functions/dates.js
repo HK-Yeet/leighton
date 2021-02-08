@@ -1,11 +1,11 @@
 // Converting dates to min sec hours and days
-const convert = (date1, date2 = null, action = '-', decimals = 0,) => {
+const convert = (date1, date2 = null, action = '-', decimals = 0) => {
 
     if(typeof date1 == 'string') {
-        date1 == new Date(date1)
+        date1 = new Date(date1)
     }
     if(typeof date2 == 'string') {
-        date2 == new Date(date2)
+        date2 = new Date(date2)
     }
 
     let number;
@@ -16,7 +16,9 @@ const convert = (date1, date2 = null, action = '-', decimals = 0,) => {
     let seconds;
 
     if(date2 == null) {
-        number = date1.getTime().catch(() => { return console.warn(date1 + `isn't a date, received ` + typeof date1) } )
+        try {
+        number = date1.getTime()
+        
         totalSeconds = (number / 1000);
         days = Math.floor(totalSeconds / 86400).toFixed()
         totalSeconds %= 86400;
@@ -28,10 +30,16 @@ const convert = (date1, date2 = null, action = '-', decimals = 0,) => {
         seconds = seconds.toFixed(decimals)
         
         return [days, hours, minutes, seconds]
+    } catch (err) {
+        return console.warn(date1 + `isn't a date, received ` + typeof date1)
+    }
 
     } else {
-        let first = date1.getTime().catch(() => { return console.warn(date1 + `isn't a date, received ` + typeof date1) } )
-        let second = date2.getTime().catch(() => { return console.warn(date1 + `isn't a date, received ` + typeof date2) } )
+        try {
+        let first = date1.getTime()
+        let second = date2.getTime()
+
+        
 
         switch (action) {
             case '+':
@@ -67,6 +75,10 @@ const convert = (date1, date2 = null, action = '-', decimals = 0,) => {
         seconds = seconds.toFixed(decimals)
 
         return [days, hours, minutes, seconds]
+
+    } catch (err) {
+        return console.warn(date1 + `isn't a date, received ` + typeof date1)
+    }
         
    
     }
