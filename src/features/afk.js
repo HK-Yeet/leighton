@@ -1,9 +1,12 @@
-const schema = require('../schemas/afk-schema')
+const firebase = require('firebase')
+const database = firebase.database()
 const convert = require('../functions/dates')
 
 module.exports = (afk, hkandler) => {
 
    afk.on('message', async message => {
+
+    if(message.author.bot) return
 
     if(!message.mentions) return
     if(!message.mentions.members.first() || !message.mentions.users.first() || !message.mentions.members.last() || !message.mentions.users.last()) return
@@ -14,25 +17,20 @@ module.exports = (afk, hkandler) => {
         return
     } else {
 
-        schema.findOne({
-            _id: person,
-
-          }, async(err, data) => {
-            if(err) console.log(err)  
-            
-            if(!data) {
-
-                return
-            } else {
-
-                if(data.afk_servers.includes(message.guild.id)) {
-
-                    let index = data.afk_servers.indexOf([message.guild.id])                 
+        let data = await database.ref(`Server/${message.guild.id}/Afk/${person}`).once('value')
+        data = data.val()
+        if(!data) return           
 
                     let now = new Date()
                     
-                    let before = data.afk_date[index]
-                    let reason = data.afk_reasons[index]
+                    let before = data.date
+                    let reason = data.reason
+                    if(!reason) {
+                        reason = 'AFK'
+                    }
+                    if(!before) {
+                       return
+                    }
 
                     let converted = convert(now, before, '-', 2)
 
@@ -78,20 +76,7 @@ module.exports = (afk, hkandler) => {
                     msg.edit(`<@${person}> is AFK: ${reason || 'AFK'}, ${join} ago`)
                     return
                   }
-
-
-                
-
-
-            }
-   
-
-    return
-
-        })
-    
-   
-   }
+           
 })
    
 }

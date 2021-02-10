@@ -1,3 +1,4 @@
+
 module.exports = {
   name: "example",
   aliases: ["ex"],
@@ -5,16 +6,17 @@ module.exports = {
   onwerOnly: true, //set owners in config.json,
   clientPerms: ["SEND_MESSAGES"],
   userPerms: ["KICK_MEMBERS"],
-  minArgs: 0, 
-  maxArgs: null,
+  minArgs: 3, 
+  maxArgs: 5,
   callback: async (bot, message, args, hkandler, database) => {
-    /*
-        you can use execute as well
-        */
 
-        database.ref('Teting/uwu/owo').set({
-          deu: 'sim'
-        })
+      let data = await database.ref(`Profiles/${person}`).once('value')
+      data = data.val()
+      
+      if(!data) {
+         return channel.send("You don't have an account created")
+      } else {
         message.channel.send('Worked')
+      } 
   },
 };
