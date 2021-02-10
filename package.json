@@ -13,6 +13,7 @@
     "canvas": "^2.6.1",
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
+    "firebase": "^8.2.6",
     "hkutilities": "^3.0.2",
     "moment": "^2.29.1",
     "mongoose": "^5.11.15",

@@ -1,4 +1,5 @@
 require('dotenv').config({ path: './src/private/.env' })
+const connectFirebase = require('../functions/firebase')
 const support = require('../private/config.json')
 const { Client } = require("discord.js");
 const client = new Client(); 
@@ -15,6 +16,10 @@ let dirs = {
 };
 
 const connect = (param = 'Empty') => {
+
+  connectFirebase()
+    console.log('Connected to Firebase')
+    
     switch(param.toLowerCase()) {
       case 'bot' :
         tok = support.token || process.env.TOKEN
@@ -60,7 +65,6 @@ const connect = (param = 'Empty') => {
 
 
     client.login(tok).catch((err) => console.log('\x1b[31mAre you sure you put your name in index.js?\x1b[0m   \n' + err))
-    
 
     client.on('ready', async () => {
      db(param).catch((err) => console.log(no_mongo + '\n' + err))

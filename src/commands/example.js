@@ -5,12 +5,16 @@ module.exports = {
   onwerOnly: true, //set owners in config.json,
   clientPerms: ["SEND_MESSAGES"],
   userPerms: ["KICK_MEMBERS"],
-  minArgs: 3, 
-  maxArgs: 5,
-  callback: async (bot, message, args, hkandler) => {
+  minArgs: 0, 
+  maxArgs: null,
+  callback: async (bot, message, args, hkandler, database) => {
     /*
         you can use execute as well
         */
+
+        database.ref('Teting/uwu/owo').set({
+          deu: 'sim'
+        })
         message.channel.send('Worked')
   },
 };
