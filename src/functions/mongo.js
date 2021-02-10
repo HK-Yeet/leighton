@@ -1,43 +1,41 @@
 require('dotenv').config({ path: './src/private/.env' })
 const mongoose = require('mongoose')
-let user = 'cannon' // 'clefory' / 'cannon' / 'bot' / null
-if(user == null) user = 'a'
-let mongoPath;
-let messages = require('../objects/messages.json')
-let message = messages.no_mongo
 
+const mongoConnect = async user => {
 
-switch(user.toLowerCase()) {
+  let key;
+  let name;
 
-  case 'cannon' :
-  console.log("Cannon's DB") 
-  mongoPath = process.env.CANNON_DB
-  break;
+  switch (user.toLowerCase()) {
 
-  case 'clefory' :
-  console.log("Clefory's DB") 
-  mongoPath = process.env.CLEFORY_DB
-  break;
+    case 'cannon':
+      key = process.env.CANNON_DB
+      name = "Cannon's"
+      break;
+  
 
-  case 'bot' :
-  console.log("Bot's DB") 
-  mongoPath = process.env.DB
-  break;
+  case 'clefory':
+    key = process.env.CLEFORY_DB
+    name = "Clefory's"
+    break;
 
-  default:
-  console.log("Default DB") 
-  mongoPath = process.env.NO_DB_BUG
-  break;
+    default:
+      key = process.env.DB
+      name = "Bot's"
+      break;
 
-}
+  }
 
-module.exports = async () => {
-  await mongoose.connect(mongoPath, {
+  await mongoose.connect(key, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
     useCreateIndex: true,
     keepAlive: true,
   })
-  return mongoose
+
+  console.log(`Connected to ${name} mongoDB`)
+
 }
+
+module.exports = mongoConnect

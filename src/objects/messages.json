@@ -1,3 +1,4 @@
 {
-    "no_mongo": "No MongoDB connection"
+    "no_mongo": "No MongoDB connection",
+    "no_firebase": "No Firebase connection"
 }

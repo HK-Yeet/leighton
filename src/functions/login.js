@@ -4,8 +4,9 @@ const { Client } = require("discord.js");
 const client = new Client(); 
 const { HKandler } = require("hkutilities");
 const { prefix, owners } = require('../private/config.json')
+const db = require('./mongo')
 let tok = 'a'
-
+let { no_mongo, no_firebase } = require('../objects/messages.json')
 
 let dirs = {
   commandsDir: "src/commands",
@@ -62,13 +63,7 @@ const connect = (param = 'Empty') => {
     
 
     client.on('ready', async () => {
-      let mongo = require('../functions/mongo')
-      if(!mongo) return console.log(require('../objects/messages.json').no_mongo)
-
-        await mongo().then(async (mongoose) => {
-            console.log('Connected to Mongodb')
-            }).catch(() => console.log(require('../objects/messages.json').no_mongo))
-            // IMPORTANT NOTE! NEVER DISCONNECT OR CONNECT AGAIN TO MONGODB        
+     db(param).catch((err) => console.log(no_mongo + '\n' + err))
   })
 }
 module.exports = connect
