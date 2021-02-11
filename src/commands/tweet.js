@@ -12,6 +12,17 @@ module.exports = {
     cooldown: 60 * 60,
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler) => {
+
+
+        let data = await database.ref(`Profiles/${message.author.id}`).once('value')
+      data = data.val()
+      
+      if(!data) {
+         return channel.send("You don't have an account created")
+      } else {
+       
+      
+
         const filter = m => m.author.id === message.author.id
         const author = message.author
         message.delete()
@@ -204,6 +215,6 @@ module.exports = {
                 console.log(ex)
                 return message.channel.send(`Time\'s up!\nThe word was ${ranomWord}`)
             }
-        }
+        }}
     },
 };

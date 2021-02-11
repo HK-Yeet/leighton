@@ -19,6 +19,8 @@ const options = [
   "a) Twitter \nb) Linkdln \nc) Facebook", //b
 ];
 
+
+
 const answers = ["a", "b", "a", "c", "a", "b"];
 let rand = Math.floor(Math.random() * questions.length);
 
@@ -27,6 +29,14 @@ module.exports = {
   name: "trivia",
   cooldown: 20,
   callback: async (client, message, args, handler) => {
+
+    let data = await database.ref(`Profiles/${message.author.id}`).once('value')
+      data = data.val()
+      
+      if(!data) {
+         return channel.send("You don't have an account created")
+      } else {
+       
     
     const filter = (m) =>
       !m.author.bot && m.content.toLowerCase() == answers[rand];
@@ -52,6 +62,6 @@ module.exports = {
       .setColor("RED")
       .setDescription(`Looks like nobody got it this time. The correct answer is: ${answers[rand]}`)
       m.edit(loss)
-    }
+    }}
   },
 };
