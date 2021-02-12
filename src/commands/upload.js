@@ -8,7 +8,7 @@ module.exports = {
   name: "upload",
   cooldown: 60 * 60, //in seconds
   clientPerms: ["SEND_MESSAGES"],
-  callback: async (bot, message, args, hkandler) => {
+  callback: async (bot, message, args, hkandler, database) => {
 
 
 

@@ -11,14 +11,14 @@ module.exports = {
     aliases: ["twitter"],
     cooldown: 60 * 60,
     clientPerms: ["SEND_MESSAGES"],
-    callback: async (bot, message, args, hkandler) => {
+    callback: async (bot, message, args, hkandler, database) => {
 
 
         let data = await database.ref(`Profiles/${message.author.id}`).once('value')
       data = data.val()
       
       if(!data) {
-         return channel.send("You don't have an account created")
+         return message.channel.send("You don't have an account created")
       } else {
        
       
