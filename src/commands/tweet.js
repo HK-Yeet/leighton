@@ -5,6 +5,7 @@ const randomWords = require('random-words')
 const txtgen = require('txtgen')
 const emojis = require('../objects/emojis.json')
 const scramble = require('wordscramble')
+const Schema = require('../schemas/posts')
 
 module.exports = {
     name: "tweet",
@@ -20,6 +21,7 @@ module.exports = {
       if(!data) {
          return message.channel.send("You don't have an account created")
       } else {
+
        
       
 
@@ -111,9 +113,59 @@ module.exports = {
             // The attachment
 
             message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(message => {
-                setTimeout(() => {
+                setTimeout(async () => {
                     message.delete()
-                    message.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+                   let msg222 = await message.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+                   const attachmentUrl = msg222.attachments.first().url
+
+                   let post_id = await database.ref(`Number`).once('value')
+      post_id = post_id.val()
+
+      if(!post_id) {
+          database.ref(`Number`).set({
+              id: 100
+          })
+      } else {
+          database.ref(`Number`).update({
+              id: post_id.id + 1
+          })
+      }
+
+      let next_id = await database.ref(`Number`).once('value')
+      next_id = next_id.val().id
+
+      await database.ref(`Posts/${next_id}`).set({
+          url: attachmentUrl
+      })
+
+      
+      const results = await Logs.findOne({
+        _id: message.author.id,
+      }, async(err, info) => {
+        if(err) console.log(err)
+        if(!info) {
+            const newSchema = new Schema({
+                _id: message.author.id,
+                name: data.username,
+                post: next_id
+            })
+            newSchema.save()
+        } else {
+            Schema.findOneAndUpdate({
+                _id: message.author.id
+            }, {
+                $push: {
+                    post: next_id
+                }
+            } 
+    )
+          
+       }
+})
+        
+      
+      
+    
                     setTimeout(() => {
                         const randomPog = Math.floor(Math.random() * 10)
                         if (randomPog < 7) {
@@ -210,11 +262,13 @@ module.exports = {
                     msg2.delete()
                     collected2.first().delete()
                     sendTweet()
-                } else return message.channel.send(`You lose!\nThe word was ${ranomWord}`)
+                } else return message.channel.send(`You lose!\nThe word was ${randomWord}`)
             } catch (ex) {
                 console.log(ex)
-                return message.channel.send(`Time\'s up!\nThe word was ${ranomWord}`)
+                return message.channel.send(`Time\'s up!\nThe word was ${randomWord}`)
             }
-        }}
-    },
-};
+        }
+
+    }
+}
+}
