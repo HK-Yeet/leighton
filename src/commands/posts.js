@@ -6,39 +6,52 @@ module.exports = {
     callback: async (client, message, args, hkandler, database) => {
 
         let person;
-        if(typeof message.mentions.users !== 'undefined') {
+        if(message.mentions == true) {
             person = message.mentions.users.first().id
+            console.log(person)
         } else if (args[0]) {
-            person = args[0].replace('@', '').trim()
+            person = args[0].toLowerCase().replace('@', '').trim()
         } else person = message.author.id
 
-        const data = await Schema.findOne({
-            person,
+        let data = await Schema.findOne({
+            _id: person,
           })
 
-        let data2 = await database.ref(`Profiles/${data}`).once('value')
+          if(!data) data = await Schema.findOne({name: person})
+
+          console.log(data)
+
+          if(!data) return message.channel.send('I can\'t find any account :/')
+
+        let data2 = await database.ref(`Profiles/${data._id}`).once('value')
       data2 = data2.val()
 
-      if(!data2 || !data2.username) {
+      if(!data2) {
 
-        return message.channel.send(`<@${person}> doesn't have an account created`)
+        return message.channel.send(`<@${data._id}> doesn't have an account created or doesn't have any posts`)
 
       } else {
 
         
 
             if(!data) {
-                return message.channel.send(`<@${person}> doesn't have an account created`)
+                return message.channel.send(`<@${data._id}> doesn't have an account created`)
             } else {
-                if(!data.posts[0]) return message.channel.send(`<@${person}> doesn't have any posts`)
+                if(!data.post[0]) return message.channel.send(`<@${data._id}> doesn't have any posts`)
                 else {
-                    const ids = data.posts
+                    const ids = data.post
                     const generateEmbed = param => {
                     const current = ids.slice(param, param + 10)
+
+                    let description = ''.trim()
+
+                    current.forEach(id => description += '**ID:** `' + id + '`\n')
                       
                     const embed = new Discord.MessageEmbed()
-                    .setTitle(`${person.username} posts ${param + 1}/${param + current.length} of ${ids.length}`)
-                    current.forEach(id => embed.addField('Post ' + current, `**ID:** ${id}`))
+                    .setTitle(`@${data.name} posts ${param + 1}/${param + current.length} of ${ids.length}`)
+                    .setColor('RANDOM')
+                    .setDescription(description)
+                    
                     return embed
                 }
 

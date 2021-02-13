@@ -14,6 +14,8 @@ module.exports = {
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler, database) => {
 
+        try {
+
 
         let data = await database.ref(`Profiles/${message.author.id}`).once('value')
       data = data.val()
@@ -112,54 +114,65 @@ module.exports = {
             const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'twitter.png')
             // The attachment
 
-            message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(message => {
+            message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(messagee => {
                 setTimeout(async () => {
-                    message.delete()
-                   let msg222 = await message.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+                    messagee.delete()
+                   let msg222 = await messagee.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
                    const attachmentUrl = msg222.attachments.first().url
 
                    let post_id = await database.ref(`Number`).once('value')
       post_id = post_id.val()
 
+
       if(!post_id) {
+          post_id = 100
           database.ref(`Number`).set({
-              id: 100
+              id: post_id
           })
       } else {
+          post_id = post_id.id
+         
           database.ref(`Number`).update({
-              id: post_id.id + 1
+              id: post_id + 1
           })
       }
 
-      let next_id = await database.ref(`Number`).once('value')
-      next_id = next_id.val().id
+      console.log(post_id)
 
-      await database.ref(`Posts/${next_id}`).set({
-          url: attachmentUrl
+
+      await database.ref(`Posts/${post_id + 1}`).set({
+          url: attachmentUrl,
+          user: message.author.id
       })
 
+
+
       
-      const results = await Logs.findOne({
+      const hello_world = await Schema.findOne({
         _id: message.author.id,
       }, async(err, info) => {
         if(err) console.log(err)
         if(!info) {
-            const newSchema = new Schema({
-                _id: message.author.id,
-                name: data.username,
-                post: next_id
-            })
-            newSchema.save()
+        return message.reply('Error')
         } else {
-            Schema.findOneAndUpdate({
-                _id: message.author.id
-            }, {
-                $push: {
-                    post: next_id
-                }
-            } 
-    )
-          
+            console.log(post_id)
+            console.log(message.author.id)
+
+         await Schema.findOneAndUpdate({
+            _id: message.author.id,
+        },
+        {   
+            $addToSet: {
+                post: post_id + 1
+            }
+
+
+        },
+        {
+            upsert: true,
+          }
+        )
+   
        }
 })
         
@@ -270,5 +283,8 @@ module.exports = {
         }
 
     }
+} catch (error) {
+    console.log(error)
+}
 }
 }
