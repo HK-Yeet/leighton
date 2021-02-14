@@ -5,37 +5,23 @@ const randomWords = require('random-words')
 const txtgen = require('txtgen')
 const emojis = require('../objects/emojis.json')
 const scramble = require('wordscramble')
-const Schema = require('../schemas/posts')
 
 module.exports = {
     name: "tweet",
-    aliases: ["twitter"],
+    aliases: ["twitter", "post"],
+    category: 'Social Media',
+    description: 'Upload a tweet to Twitter!\nWatch out, not tweeting at least once a day will make you lose followers!',
     cooldown: 60 * 60,
     clientPerms: ["SEND_MESSAGES"],
-    callback: async (bot, message, args, hkandler, database) => {
-
-        try {
-
-
-        let data = await database.ref(`Profiles/${message.author.id}`).once('value')
-      data = data.val()
-      
-      if(!data) {
-         return message.channel.send("You don't have an account created")
-      } else {
-
-       
-      
-
+    callback: async (bot, message, args, hkandler) => {
         const filter = m => m.author.id === message.author.id
         const author = message.author
         message.delete()
-
         async function sendTweet() {
             let text = '';
             let pog = 0;
             let length = 0;
-            let sentence = txtgen.sentence().split(' ')
+            let sentence = args.length > 0 ? args : txtgen.sentence().split(' ')
             for (i = 0; i < sentence.length; i++) {
                 if (pog < 6) text += `${sentence[i]} `
                 else {
@@ -114,78 +100,16 @@ module.exports = {
             const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'twitter.png')
             // The attachment
 
-            message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(messagee => {
-                setTimeout(async () => {
-                    messagee.delete()
-                   let msg222 = await messagee.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
-                   const attachmentUrl = msg222.attachments.first().url
-
-                   let post_id = await database.ref(`Number`).once('value')
-      post_id = post_id.val()
-
-
-      if(!post_id) {
-          post_id = 100
-          database.ref(`Number`).set({
-              id: post_id
-          })
-      } else {
-          post_id = post_id.id
-         
-          database.ref(`Number`).update({
-              id: post_id + 1
-          })
-      }
-
-      console.log(post_id)
-
-
-      await database.ref(`Posts/${post_id + 1}`).set({
-          url: attachmentUrl,
-          user: message.author.id
-      })
-
-
-
-      
-      const hello_world = await Schema.findOne({
-        _id: message.author.id,
-      }, async(err, info) => {
-        if(err) console.log(err)
-        if(!info) {
-        return message.reply('Error')
-        } else {
-            console.log(post_id)
-            console.log(message.author.id)
-
-         await Schema.findOneAndUpdate({
-            _id: message.author.id,
-        },
-        {   
-            $addToSet: {
-                post: post_id + 1
-            }
-
-
-        },
-        {
-            upsert: true,
-          }
-        )
-   
-       }
-})
-        
-      
-      
-    
+            message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(message => {
+                setTimeout(() => {
+                    message.delete()
+                    message.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
                     setTimeout(() => {
-                        const randomPog = Math.floor(Math.random() * 10)
-                        if (randomPog < 7) {
-                            const subsGain = Math.floor(Math.random() * 100)
+                        if (random > 35) {
+                            const subsGain = Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)
                             message.channel.send(`${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`)
-                        } else if (randomPog >= 7) {
-                            const subsLoss = Math.floor(Math.random() * 30)
+                        } else {
+                            const subsLoss = Math.floor(Math.random() * 25)
                             message.channel.send(`${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`)
                         }
                     }, 10000)
@@ -208,7 +132,7 @@ module.exports = {
             try {
                 const collected = await message.channel.awaitMessages(filter, {
                     max: 1,
-                    time: 5000,
+                    time: 10000,
                     errors: ['time']
                 })
                 if (collected.first().content.toLowerCase() === ogWord.join(' ')) {
@@ -224,7 +148,7 @@ module.exports = {
             try {
                 const collected1 = await message.channel.awaitMessages(filter, {
                     max: 1,
-                    time: 5000,
+                    time: 10000,
                     errors: ['time']
                 })
                 const owner = await message.guild.members.fetch(message.guild.ownerID)
@@ -247,7 +171,7 @@ module.exports = {
             try {
                 const collected2 = await message.channel.awaitMessages(filter, {
                     max: 1,
-                    time: 5000,
+                    time: 10000,
                     errors: ['time']
                 })
                 if (!collected2.first()) return
@@ -281,10 +205,5 @@ module.exports = {
                 return message.channel.send(`Time\'s up!\nThe word was ${randomWord}`)
             }
         }
-
-    }
-} catch (error) {
-    console.log(error)
-}
-}
-}
+    },
+};
