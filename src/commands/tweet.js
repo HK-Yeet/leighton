@@ -5,6 +5,7 @@ const randomWords = require('random-words')
 const txtgen = require('txtgen')
 const emojis = require('../objects/emojis.json')
 const scramble = require('wordscramble')
+const schema = require('../schemas/posts')
 
 module.exports = {
     name: "tweet",
@@ -13,7 +14,13 @@ module.exports = {
     description: 'Upload a tweet to Twitter!\nWatch out, not tweeting at least once a day will make you lose followers!',
     cooldown: 60 * 60,
     clientPerms: ["SEND_MESSAGES"],
-    callback: async (bot, message, args, hkandler) => {
+    callback: async (bot, message, args, hkandler, database) => {
+
+        let account = await database.ref(`Profiles/${message.author.id}`).once('value')
+        account = account.val()
+        
+        if(!account) return message.channel.send("You don't have an account created")
+
         const filter = m => m.author.id === message.author.id
         const author = message.author
         message.delete()
@@ -21,7 +28,7 @@ module.exports = {
             let text = '';
             let pog = 0;
             let length = 0;
-            let sentence = args.length > 0 ? args : txtgen.sentence().split(' ')
+            let sentence = args.length > 0 && args.length < 60 ? args : txtgen.sentence().split(' ')
             for (i = 0; i < sentence.length; i++) {
                 if (pog < 6) text += `${sentence[i]} `
                 else {
@@ -100,11 +107,42 @@ module.exports = {
             const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'twitter.png')
             // The attachment
 
-            message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(message => {
-                setTimeout(() => {
-                    message.delete()
-                    message.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+            message.channel.send(`${emojis.twitter} Uploading your tweet!`).then(message2 => {
+                setTimeout( async() => {
+                    message2.delete()
+                    let url = await message2.channel.send(`<:Twitter:808067779395715113> Hey, everyone look!\n${user} has just uploaded a new tweet!`, attachment)
+                    url = url.attachments.first().url
+                    let number = await database.ref(`Number`).once('value')
+                    number = number.val()
+
+                    if(!number) {
+                        number = 100
+                        await database.ref(`Number`).set({
+                            id: number
+                        })
+                    } else {
+                        number = number.id
+                    number++
+                    await database.ref(`Number`).update({
+                        id: number
+                    })
+                }
+
+                await database.ref(`Posts/${number}`).set({
+                    url: url,
+                    user: message.author.id
+                })
+
+                await schema.findOne({
+                    _id: message.author.id
+                })
+
+                if(!schema) return
+                
+                await schema.findOneAndUpdate({ _id: message.author.id }, { $push: { post: number } } )
                     setTimeout(() => {
+
+                        
                         if (random > 35) {
                             const subsGain = Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)
                             message.channel.send(`${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`)
