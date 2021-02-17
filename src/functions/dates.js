@@ -1,5 +1,5 @@
 // Converting dates to min sec hours and days
-const convert = (date1, date2 = null, action = '-', decimals = 0) => {
+const convert = (date1, decimals = 0, date2 = null, action = '-') => {
 
     if(typeof date1 !== 'number') {
         date1 = new Date(date1)
