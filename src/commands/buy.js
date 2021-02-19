@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const emojis = require('../objects/emojis.json')
 
 module.exports = {
     name: "buy",
@@ -16,7 +17,7 @@ module.exports = {
         if (isNaN(args[0])) return message.channel.send('The # of the game you mentioned is not a number!\nType `!shop` for a list of all of the games!')
         if (Number(args[0]) < 1 || Number(args[0]) > 8) return message.channel.send('Invalid game number!')
         const number = Number(args[0]) - 1
-        await message.channel.send(`You are about to purchase ${games[number]} for ${values[number]}!\nAre you sure? (Yes / No)`)
+        await message.channel.send(`You are about to purchase ${games[number]} for ${emojis.money} **${values[number]}**!\nAre you sure? (Yes / No)`)
         entry = '';
         do {
             try {
@@ -27,7 +28,7 @@ module.exports = {
             })
                 entry = collected.first().content.toLowerCase()
                 if (entry === 'yes') {
-                    return message.reply(`you have successfully purchased ${games[number]} for ${values[number]}!`)
+                    return message.reply(`you have successfully purchased ${games[number]} for ${emojis.money} **${values[number]}**!`)
                 } else if (entry === 'no') {
                     return message.reply('Cancelled.')
                 } else message.reply('Please enter a valid response.')
