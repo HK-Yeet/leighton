@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
-const { coin } = require('../objects/emojis.json')
+const emojis = require('../objects/emojis.json')
+
 
 module.exports = {
     name: "shop",
@@ -16,16 +17,16 @@ module.exports = {
             .setDescription(description)
             .addFields({
                 name: '1. Fortnite',
-                value: coin + '100'
+                value: `${emojis.money} 100`
             }, {
                 name: '2. Rocket League',
-                value: coin + '300'
+                value: `${emojis.money} 300`
             }, {
                 name: '3. GTA V',
-                value: coin + '600'
+                value: `${emojis.money} 600`
             }, {
                 name: '4. Super Smash Bros Ultimate',
-                value: coin + '1000'
+                value: `${emojis.money} 1000`
             })
             .setColor('#5c72ec')
         const page2 = new Discord.MessageEmbed()
@@ -33,16 +34,16 @@ module.exports = {
             .setDescription(description)
             .addFields({
                 name: '5. Resident Evil',
-                value: coin + '2000'
+                value: `${emojis.money} 2000`
             }, {
                 name: '6. Super Mario 3D world',
-                value: coin + '3000'
+                value: `${emojis.money} 3000`
             }, {
                 name: '7. LEGO Star Wars',
-                value: coin + '5000'
+                value: `${emojis.money} 5000`
             }, {
                 name: '8. Gamers Rising Simulator',
-                value: coin + '10000'
+                value: `${emojis.money} 10000`
             })
             .setColor('#5c72ec')
         new rm.menu({
