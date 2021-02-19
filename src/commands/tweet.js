@@ -151,7 +151,7 @@ module.exports = {
                         if (random > 35) {
                             const subsGain = Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)
 
-                            await database.ref(`Profiles/${message.author}`).update({
+                            await database.ref(`Profiles/${message.author.id}`).update({
                                 followers: account.followers ? account.followers + subsGain : subsGain
                             })
                             message.channel.send(`${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`)
@@ -162,7 +162,7 @@ module.exports = {
                             if(!account.followers || account.followers < subsLoss) tieOrLossMessage = `${author}, unfortunately, your recent tweet did nothing...`
                             else {
                                 tieOrLossMessage = `${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`
-                                await database.ref(`Profiles/${message.author}`).update({
+                                await database.ref(`Profiles/${message.author.id}`).update({
                                     followers: account.followers - subsLoss
                                 })
                             }
