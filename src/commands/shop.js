@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const emojis = require('../objects/emojis.json')
+const rm = require('discord.js-reaction-menu')
 
 
 module.exports = {
@@ -10,7 +11,7 @@ module.exports = {
     clientPerms: ['SEND_MESSAGES'],
     cooldown: 20,
     callback: async (client, message, args, handler) => {
-        const rm = require('discord.js-reaction-menu')
+        
         const description = 'Welcome to the game shop!\nBuy Games here to increase the follower revenue per video!'
         const page1 = new Discord.MessageEmbed()
             .setTitle('Page 1')

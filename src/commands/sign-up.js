@@ -37,7 +37,8 @@ module.exports = {
 
 
         database.ref(`Profiles/${message.author.id}`).set({
-            username: nameNew
+            username: nameNew,
+            money: 0
         })
         
             if(!results || results == null || typeof results._id == 'undefined') {

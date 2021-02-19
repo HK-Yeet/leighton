@@ -12,6 +12,7 @@
   "dependencies": {
     "canvas": "^2.6.1",
     "discord.js": "^12.5.1",
+    "discord.js-reaction-menu": "^1.1.1",
     "dotenv": "^8.2.0",
     "firebase": "^8.2.6",
     "hkutilities": "^3.0.2",

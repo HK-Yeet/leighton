@@ -8,7 +8,12 @@ module.exports = {
     description: 'Buy more games for your YouTube channel!',
     clientPerms: ['SEND_MESSAGES'],
     cooldown: 20,
-    callback: async (client, message, args, handler) => {
+    callback: async (client, message, args, handler, database) => {
+
+        let data = await database.ref(`Profiles/${message.author.id}`).once('value')
+        data = data.val()
+
+        if(!data) return message.reply("You don't have an account created")
         const filter = m => m.author.id === message.author.id
         const games = ['Fortnite', 'Rocket League', 'GTA V', 'Super Smash Bros Ultimate', 'Resident Evil', 'Super Mario 3D World', 'LEGO Star Wars', 'Gamers Rising Simulator']
         const values = [100, 300, 600, 1000, 2000, 3000, 5000, 10000]
@@ -17,6 +22,9 @@ module.exports = {
         if (isNaN(args[0])) return message.channel.send('The # of the game you mentioned is not a number!\nType `!shop` for a list of all of the games!')
         if (Number(args[0]) < 1 || Number(args[0]) > 8) return message.channel.send('Invalid game number!')
         const number = Number(args[0]) - 1
+
+        let cash = data.money || 0
+        if(cash < values[number]) return message.reply(`You don't have enough money to purchase **${games[number]}**, the price is ${emojis.money} **${values[number]}** and you have ${emojis.money} **${cash}**, see the difference?\nYou need more ${emojis.money} **${values[number] - cash}**`)
         await message.channel.send(`You are about to purchase ${games[number]} for ${emojis.money} **${values[number]}**!\nAre you sure? (Yes / No)`)
         entry = '';
         do {

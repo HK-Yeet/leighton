@@ -12,7 +12,7 @@ module.exports = {
     aliases: ["twitter", "post"],
     category: 'Social Media',
     description: 'Upload a tweet to Twitter!\nWatch out, not tweeting at least once a day will make you lose followers!',
-    cooldown: 60 * 60,
+    //cooldown: 60 * 60,
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler, database) => {
 
@@ -40,7 +40,7 @@ module.exports = {
             let user = message.author
             //The author change this
             let random = Math.floor(Math.random() * 100) + 1
-            // Gets a random number from 1 to 100 
+            // Gets a random number from 1 to 100 it's for likes
             const canvas = Canvas.createCanvas(597, 391)
             // Creates a blank template
             const ctx = canvas.getContext('2d')
@@ -76,7 +76,7 @@ module.exports = {
             // Text font
             ctx.fillStyle = '#9b9b9b';
             // Text color
-            ctx.fillText('@' + user.tag.split('#').join(''), canvas.width / 7.6, canvas.height / 5.2);
+            ctx.fillText('@' + account.username ? account.username : 'unknown', canvas.width / 7.6, canvas.height / 5.2);
             // Example xJustClefory0002 | user: xJustClefory#0002
 
 
@@ -130,7 +130,12 @@ module.exports = {
 
                 await database.ref(`Posts/${number}`).set({
                     url: url,
-                    user: message.author.id
+                    user: message.author.id,
+                    likes: random
+                })
+
+                await database.ref(`Profiles/${message.author.id}`).update({
+                    likes: account.likes ? account.likes + random : random
                 })
 
                 await schema.findOne({
@@ -140,15 +145,28 @@ module.exports = {
                 if(!schema) return
                 
                 await schema.findOneAndUpdate({ _id: message.author.id }, { $push: { post: number } } )
-                    setTimeout(() => {
+                    setTimeout(async() => {
 
                         
                         if (random > 35) {
                             const subsGain = Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)
+
+                            await database.ref(`Profiles/${message.author}`).update({
+                                followers: account.followers ? account.followers + subsGain : subsGain
+                            })
                             message.channel.send(`${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`)
                         } else {
                             const subsLoss = Math.floor(Math.random() * 25)
-                            message.channel.send(`${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`)
+                            let tieOrLossMessage = ' '
+
+                            if(!account.followers || account.followers < subsLoss) tieOrLossMessage = `${author}, unfortunately, your recent tweet did nothing...`
+                            else {
+                                tieOrLossMessage = `${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`
+                                await database.ref(`Profiles/${message.author}`).update({
+                                    followers: account.followers - subsLoss
+                                })
+                            }
+                            message.channel.send(tieOrLossMessage)
                         }
                     }, 10000)
                 }, 4000)
