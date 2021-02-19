@@ -6,6 +6,7 @@ module.exports = {
     cooldown: 5, //in seconds
     minArgs: 1, 
     maxArgs: 1,
+    clientPerms: ["SEND_MESSAGES", "ATTACH_FILES", "EMBED_LINKS"],
     callback: async (bot, message, args, hkandler, database) => {
 
         if(isNaN(args[0])) return message.channel.send('That id looks weird dude')
