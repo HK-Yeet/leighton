@@ -48,7 +48,7 @@ module.exports = {
                     current.forEach(id => description += '**ID:** `' + id + '`\n')
                       
                     const embed = new Discord.MessageEmbed()
-                    .setTitle(`@${data.name} posts ${param + 1}/${param + current.length} of ${ids.length}`)
+                    .setTitle(`@${data.name} posts ${param + 1 }-${param + current.length}/${ids.length}`)
                     .setColor('RANDOM')
                     .setDescription(description)
                     

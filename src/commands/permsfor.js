@@ -40,12 +40,11 @@ const permissions = [
 ]
 
 module.exports = {
-  name: "example",
+  name: "perms",
   aliases: ["ex"],
   cooldown: 5, //in seconds
   onwerOnly: true, //set owners in config.json,
   clientPerms: ["SEND_MESSAGES"],
-  userPerms: ["KICK_MEMBERS"],
   //minArgs: 3, 
   //maxArgs: 5,
   callback: async (bot, message, args, hkandler, database) => {

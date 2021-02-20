@@ -1,14 +1,17 @@
 const mongoose = require('mongoose')
 
-const post = mongoose.Schema({
+const iten = mongoose.Schema({
   _id: {
-    type: String,
-    required: true
+    type: String, // string
+    required: true // required
   },
-  items: {
-      type: [String]
+  itens: {
+      type: [String] // array
+  },
+  clock: {
+    type: Number // String
   }
 
 })
 
-module.exports = mongoose.model('post', post)
+module.exports = mongoose.model('iten', iten)

@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const emojis = require('../objects/emojis.json')
-
+const schema = require('../schemas/items')
 module.exports = {
     name: "buy",
     category: 'Economy',
@@ -24,7 +24,12 @@ module.exports = {
         const number = Number(args[0]) - 1
 
         let cash = data.money || 0
-        if(cash < values[number]) return message.reply(`You don't have enough money to purchase **${games[number]}**, the price is ${emojis.money} **${values[number]}** and you have ${emojis.money} **${cash}**, see the difference?\nYou need more ${emojis.money} **${values[number] - cash}**`)
+
+        const results = await schema.findOne({_id: message.author.id})
+        if(results) {
+            if(results.itens.includes(games[number])) return message.reply('Already have ' + games[number])
+        }
+        if(cash <  values[number]) return message.reply(`You don't have enough money to purchase **${games[number]}**, the price is ${emojis.money} **${values[number]}** and you have ${emojis.money} **${cash}**, see the difference?\nYou need more ${emojis.money} **${values[number] - cash}**`)
         await message.channel.send(`You are about to purchase ${games[number]} for ${emojis.money} **${values[number]}**!\nAre you sure? (Yes / No)`)
         entry = '';
         do {
@@ -36,7 +41,29 @@ module.exports = {
             })
                 entry = collected.first().content.toLowerCase()
                 if (entry === 'yes') {
-                    return message.reply(`you have successfully purchased ${games[number]} for ${emojis.money} **${values[number]}**!`)
+                    message.reply(`You have successfully purchased ${games[number]} for ${emojis.money} **${values[number]}**!`)
+
+
+                    await database.ref(`Profiles/${message.author.id}`).update({money: (data.money - values[number])})
+
+                    
+                    if(!results) {
+                        const newResults = new schema({
+                            _id: message.author.id,
+                            itens: games[number]
+                        });
+
+                        newResults.save()
+
+                    } else {
+                        await schema.findOneAndUpdate({
+                            _id: message.author.id
+                        }, {
+                            $addToSet: { itens: games[number] }
+                        })
+                    }
+
+                    return
                 } else if (entry === 'no') {
                     return message.reply('Cancelled.')
                 } else message.reply('Please enter a valid response.')
