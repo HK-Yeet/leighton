@@ -254,7 +254,7 @@ module.exports = {
                 return message.channel.send(`Time\'s up!\nThe word was ${socials[randomSocial + 1]}!`)
             }
         } else if (randomGame === '3') {
-            const words = ['youtube', 'twitter', 'twitch', 'instagram', 'leighton', 'media', 'social', 'camera', 'post', 'follower', 'subscribe']
+            const words = ['youtube', 'twitter', 'twitch', 'instagram', 'leighton', 'media', 'social', 'camera', 'post', 'follower', 'subscribe', 'like', 'block', 'discord', 'email', 'photo', 'video', 'trend', 'tiktok']
             const randomWord = words[Math.floor(Math.random() * words.length)]
             const msg2 = await message.channel.send(`${emojis.twitter} **Twitter task!**:\nUnscramble the following word! (Social media related!):\n\n${scramble.scramble(randomWord)}`)
             try {

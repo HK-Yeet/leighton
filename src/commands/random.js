@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const { coin } = require('../objects/emojis.json')
+const schema = require('../schemas/posts')
 module.exports = {
     name: "random",
     aliases: ["rand"],
@@ -22,9 +23,20 @@ module.exports = {
         result = result.val()
     } while (!result || !result.url)
 
+    let name;
+    if(result.user) {
+
+        let results = await schema.findOne({_id: result.user})
+        if(!results) return message.channel.send(`Oops, something went wrong!`)
+        
+        name = results.name
+
+    } else name = 'unknown'
+
     const embed = new Discord.MessageEmbed()
     .setImage(result.url)
-    .setFooter(`Post by ${result.user ? result.user : 'unknown'}`)
+    .setFooter(`Post by @${name}`)
+    .setColor('RANDOM')
 
     return message.channel.send(embed)
 } catch (err) { console.log(err) }
