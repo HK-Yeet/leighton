@@ -11,10 +11,6 @@ module.exports = {
 
     if(!data) return channel.send("You don't have an account created")
 
-
-
-
-
     let dataCooldown = await database.ref(`Cooldowns/Work/${message.author.id}`).once('value')
     dataCooldown = dataCooldown.val()
 

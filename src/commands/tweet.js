@@ -6,6 +6,7 @@ const txtgen = require('txtgen')
 const emojis = require('../objects/emojis.json')
 const scramble = require('wordscramble')
 const schema = require('../schemas/posts')
+const gameSchema = require('../schemas/items')
 
 module.exports = {
     name: "tweet",
@@ -147,17 +148,29 @@ module.exports = {
                 await schema.findOneAndUpdate({ _id: message.author.id }, { $push: { post: number } } )
                     setTimeout(async() => {
 
-                        
+                        let bonus = 1
+                        let winMessage;
+
                         if (random > 35) {
-                            const subsGain = Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)
+                            const subsGain = (Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)) * (1 + (0.5 * (bonus)))
+
+                            let games = await gameSchema.findOne({_id: message.author.id})
+                            if(!games || games.itens.length <= 0) {
+                                bonus = 1
+                                winMessage = `${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`
+                            } else {
+                                bonus = games.itens.length
+                                winMessage = `${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers! [${1 + (0.5 * (bonus))}x Games Bonus]`
+                            }
 
                             await database.ref(`Profiles/${message.author.id}`).update({
                                 followers: account.followers ? account.followers + subsGain : subsGain
                             })
-                            message.channel.send(`${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`)
+                            message.channel.send(winMessage)
                         } else {
                             const subsLoss = Math.floor(Math.random() * 25)
                             let tieOrLossMessage = ' '
+                            
 
                             if(!account.followers || account.followers < subsLoss) tieOrLossMessage = `${author}, unfortunately, your recent tweet did nothing...`
                             else {
