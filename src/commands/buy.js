@@ -29,7 +29,7 @@ module.exports = {
         if(results) {
             if(results.itens.includes(games[number])) return message.reply('Already have ' + games[number])
         }
-        if(cash <  values[number]) return message.reply(`You don't have enough money to purchase **${games[number]}**, the price is ${emojis.money} **${values[number]}** and you have ${emojis.money} **${cash}**, see the difference?\nYou need more ${emojis.money} **${values[number] - cash}**`)
+        if(cash < values[number]) return message.reply(`You don't have enough money to purchase **${games[number]}**, the price is ${emojis.money} **${values[number]}** and you have ${emojis.money} **${cash}**, see the difference?\nYou need more ${emojis.money} **${values[number] - cash}**`)
         await message.channel.send(`You are about to purchase ${games[number]} for ${emojis.money} **${values[number]}**!\nAre you sure? (Yes / No)`)
         entry = '';
         do {
@@ -45,7 +45,6 @@ module.exports = {
 
 
                     await database.ref(`Profiles/${message.author.id}`).update({money: (data.money - values[number])})
-
                     
                     if(!results) {
                         const newResults = new schema({

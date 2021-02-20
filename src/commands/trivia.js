@@ -42,13 +42,14 @@ const options = [
 ];
 
 const answers = ["a", "b", "a", "c", "a", "b", "c", "a", "d", "b", "a", "b", "b", "c", "a", "b", "d"];
-let rand = Math.floor(Math.random() * questions.length);
+
 
 // so the question 0 the options will be the options 0 i added a comment for the correct answer please add more
 module.exports = {
   name: "trivia",
   cooldown: 20,
-  callback: async (client, message, args, handler) => {
+  callback: async (client, message, args, handler, database) => {
+
 
     let data = await database.ref(`Profiles/${message.author.id}`).once('value')
       data = data.val()
@@ -57,6 +58,7 @@ module.exports = {
          return channel.send("You don't have an account created")
       } else {
        
+        let rand = Math.floor(Math.random() * questions.length);
     
     const filter = (m) =>
       !m.author.bot && m.content.toLowerCase() == answers[rand];

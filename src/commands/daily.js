@@ -17,7 +17,7 @@ module.exports = {
     if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 60 * 24) {
 
     await database.ref(`Cooldowns/Daily/${message.author.id}`).remove()
-    let random = Math.floor(Math.random() * 70) + 1
+    let random = Math.floor(Math.random() * 100) + 150
     let cash = data.money || 0
 
     message.channel.send(`Here's your daily reward: ${coin} **${random}**`)
@@ -70,7 +70,7 @@ module.exports = {
 
                     words.forEach(word => final = final.trim() + word.trim() + 'z')
 
-        return message.channel.send(`You got to wait more${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
+        return message.channel.send(`You have already claimed your reward!\nWait more ${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}to execute this command again!`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
     }
 
 

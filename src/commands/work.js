@@ -70,7 +70,7 @@ module.exports = {
 
                     words.forEach(word => final = final.trim() + word.trim() + 'z')
 
-        return message.channel.send(`You got to wait more${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
+        return message.channel.send(`Take a break for${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}!\nYou have already worked`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
     }
 
 

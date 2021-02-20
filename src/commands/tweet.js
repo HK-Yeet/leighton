@@ -7,13 +7,14 @@ const emojis = require('../objects/emojis.json')
 const scramble = require('wordscramble')
 const schema = require('../schemas/posts')
 const gameSchema = require('../schemas/items')
+const { coin } = require('../objects/emojis.json')
 
 module.exports = {
     name: "tweet",
     aliases: ["twitter", "post"],
     category: 'Social Media',
     description: 'Upload a tweet to Twitter!\nWatch out, not tweeting at least once a day will make you lose followers!',
-    //cooldown: 60 * 60,
+    cooldown: 60 * 2,
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler, database) => {
 
@@ -77,7 +78,7 @@ module.exports = {
             // Text font
             ctx.fillStyle = '#9b9b9b';
             // Text color
-            ctx.fillText('@' + account.username ? account.username : 'unknown', canvas.width / 7.6, canvas.height / 5.2);
+            ctx.fillText(`@${account.username ? account.username : 'unknown'}`, canvas.width / 7.6, canvas.height / 5.2);
             // Example xJustClefory0002 | user: xJustClefory#0002
 
 
@@ -152,19 +153,22 @@ module.exports = {
                         let winMessage;
 
                         if (random > 35) {
-                            const subsGain = (Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61)))) + (random < 50 ? 5 : 20)) * (1 + (0.5 * (bonus)))
+                            let subsGain = (Math.floor(Math.random() * (random < 50 ? 16 : (random < 70 ? 21 : (random < 90 ? 41 : 61))) + (random < 50 ? 5 : 20) * (1 + (0.5 * (bonus)))))
+                            subsGain = Math.floor(subsGain)
+                            let extraCoins = Math.floor(Math.random() * 30) + 3
 
                             let games = await gameSchema.findOne({_id: message.author.id})
                             if(!games || games.itens.length <= 0) {
                                 bonus = 1
-                                winMessage = `${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers!`
+                                winMessage = `${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers and ${coin} ${extraCoins}!`
                             } else {
                                 bonus = games.itens.length
-                                winMessage = `${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers! [${1 + (0.5 * (bonus))}x Games Bonus]`
+                                winMessage = `${author}, due to recent success on your tweet...\nYou have managed to gain **${subsGain}** followers and ${coin} ${extraCoins}! [${(1 + (0.5 * (bonus))).toFixed()}x Games Bonus]`
                             }
 
                             await database.ref(`Profiles/${message.author.id}`).update({
-                                followers: account.followers ? account.followers + subsGain : subsGain
+                                followers: account.followers ? account.followers + subsGain : subsGain,
+                                money: account.money ? account.money + extraCoins : extraCoins
                             })
                             message.channel.send(winMessage)
                         } else {
@@ -176,7 +180,7 @@ module.exports = {
                             else {
                                 tieOrLossMessage = `${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`
                                 await database.ref(`Profiles/${message.author.id}`).update({
-                                    followers: account.followers - subsLoss
+                                    followers: Math.floor(account.followers - subsLoss)
                                 })
                             }
                             message.channel.send(tieOrLossMessage)
