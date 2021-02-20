@@ -5,6 +5,8 @@ const x = "```"
 const s = '📛'
 const c = '♨️'
 
+// This code is in code-snippets but we made it
+
 const permissions = [
   'CREATE_INSTANT_INVITE',
   'KICK_MEMBERS',
@@ -41,7 +43,7 @@ const permissions = [
 
 module.exports = {
   name: "perms",
-  aliases: ["ex"],
+  aliases: ["permsfor"],
   cooldown: 5, //in seconds
   onwerOnly: true, //set owners in config.json,
   clientPerms: ["SEND_MESSAGES"],
