@@ -10,8 +10,6 @@ module.exports = {
   clientPerms: ["SEND_MESSAGES"],
   callback: async (bot, message, args, hkandler, database) => {
 
-
-
     let data = await database.ref(`Profiles/${message.author.id}`).once('value')
       data = data.val()
       
