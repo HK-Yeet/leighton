@@ -1,11 +1,11 @@
 // Converting dates to min sec hours and days
-const convert = (date1, decimals = 0, date2 = null, action = '-') => {
+const convert = (date1, date2 = null, action = '-', decimals = 0) => {
 
     if(typeof date1 !== 'number') {
-        date1 = new Date(date1)
+        date1 = new Date(date1).getTime()
     }
     if(typeof date2 !== 'number') {
-        date2 = new Date(date2)
+        date2 = new Date(date2).getTime()
     }
 
     let number;
@@ -17,7 +17,7 @@ const convert = (date1, decimals = 0, date2 = null, action = '-') => {
 
     if(date2 == null) {
         try {
-        number = date1.getTime()
+        number = date1
         
         totalSeconds = (number / 1000);
         days = Math.floor(totalSeconds / 86400).toFixed() || 0
@@ -36,8 +36,8 @@ const convert = (date1, decimals = 0, date2 = null, action = '-') => {
 
     } else {
         try {
-        let first = date1.getTime()
-        let second = date2.getTime()
+        let first = date1
+        let second = date2
 
         
 
