@@ -4,6 +4,8 @@ const schema = require('../schemas/items')
 
 module.exports = {
     name: "games",
+    description: 'Get a full list of all of your games!',
+    category: 'Social Media 2',
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
