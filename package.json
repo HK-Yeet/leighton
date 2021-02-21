@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "canvas": "^2.6.1",
     "discord.js": "^12.5.1",
     "discord.js-reaction-menu": "^1.1.1",

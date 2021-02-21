@@ -9,7 +9,8 @@ const iten = mongoose.Schema({
       type: [String] // array
   },
   clock: {
-    type: Number // String
+    type: Number // Number 
+    // Didn't have time to do this
   }
 
 })

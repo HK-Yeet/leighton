@@ -14,7 +14,7 @@ module.exports = {
     aliases: ["twitter", "post"],
     category: 'Social Media',
     description: 'Upload a tweet to Twitter!\nWatch out, not tweeting at least once a day will make you lose followers!',
-    cooldown: 60 * 2,
+    cooldown: 60 * 5,
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler, database) => {
 

@@ -55,7 +55,7 @@ module.exports = {
       data = data.val()
       
       if(!data) {
-         return channel.send("You don't have an account created")
+         return message.channel.send("You don't have an account created")
       } else {
        
         let rand = Math.floor(Math.random() * questions.length);

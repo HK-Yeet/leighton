@@ -17,7 +17,7 @@ module.exports = {
     if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 60 * 2) {
 
     await database.ref(`Cooldowns/Work/${message.author.id}`).remove()
-    let random = Math.floor(Math.random() * 35) + 1
+    let random = Math.floor(Math.random() * (45 - 20)) + 20
     let cash = data.money || 0
 
     message.channel.send(`You worked and got ${coin} **${random}**`)

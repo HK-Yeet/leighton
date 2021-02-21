@@ -1,7 +1,7 @@
 const Schema = require('../schemas/posts')
 module.exports = {
     name: "sign-up",
-    aliases: ["log-in"],
+    aliases: ["log-in", "sign-up", "log-in"],
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
