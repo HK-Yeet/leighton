@@ -47,6 +47,8 @@ const answers = ["a", "b", "a", "c", "a", "b", "c", "a", "d", "b", "a", "b", "b"
 // so the question 0 the options will be the options 0 i added a comment for the correct answer please add more
 module.exports = {
   name: "trivia",
+  description: 'Play a fun game of Social Media trivia!',
+  category: 'Social Media 2',
   cooldown: 20,
   callback: async (client, message, args, handler, database) => {
 
