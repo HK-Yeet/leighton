@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 module.exports = {
-    name: "vote",
+    name: "upvote",
     category: 'Important',
     description: 'Vote for Leighton in the WOK Competition!',
     cooldown: 60 * 60,
