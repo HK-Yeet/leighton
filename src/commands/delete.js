@@ -4,6 +4,8 @@ const { coin } = require('../objects/emojis.json')
 
 module.exports = {
     name: "delete",
+    description: 'Delete your account.',
+    category: 'Social Media',
     alias: ['del'],
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
