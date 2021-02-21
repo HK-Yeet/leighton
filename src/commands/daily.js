@@ -3,6 +3,8 @@ const { coin } = require('../objects/emojis.json')
 const convert = require('../functions/dates')
 module.exports = {
     name: "daily",
+    description: 'Claim your daily coins reward!',
+    category: 'Economy',
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
