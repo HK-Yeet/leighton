@@ -31,7 +31,7 @@ module.exports = {
     async function Upload() {
       const author = message.author
       const likes = Math.floor(Math.random() * 100) + 1
-      const dislikes = Math.floor(Math.random() * 30) + 1
+      const dislikes = Math.floor(Math.random() * 45) + 1
       const Canvas = canvas.createCanvas(877, 640)
       /// Creates the blank template
       const ctx = Canvas.getContext('2d')
@@ -97,6 +97,7 @@ module.exports = {
       const epic = `**Done!**\n${author}, your video has been uploaded to YouTube!`
       message.channel.send(`${emojis.youtube} Uploading your video...`).then(message2 => {
         setTimeout(async () => {
+          await database.ref(`Cooldowns/Upload/${message.author.id}`).set({time: Date.now()})
           message2.delete()
           message.channel.send(epic, attachment)
           setTimeout(async () => {
@@ -114,9 +115,9 @@ module.exports = {
               const subsLoss = Math.floor(Math.random() * 25)
 
               let tieOrLossMessage = ' '
-                            if(!data.followers || data.followers < subsLoss) tieOrLossMessage = `${author}, unfortunately, your recent tweet did nothing...`
+                            if(!data.followers || data.followers < subsLoss) tieOrLossMessage = `${author}, unfortunately, your recent upload did nothing...`
                             else {
-                                tieOrLossMessage = `${author}, unfortunately, your recent tweet has done horribly...\nYou have managed to lose **${subsLoss}** followers!`
+                                tieOrLossMessage = `${author}, unfortunately, your recent upload has done horribly...\nYou have managed to lose **${subsLoss}** followers!`
                                 await database.ref(`Profiles/${message.author.id}`).update({
                                     followers: Math.floor(data.followers - subsLoss)
                                 })
@@ -138,7 +139,7 @@ module.exports = {
       ogWord.forEach(letter => {
         word += '`' + letter.split('').join(' ') + '` '
       })
-      const msg = await message.channel.send(`${emojis.YouTube} **YouTube task!**:\nWrite the following word!\n${word}`)
+      const msg = await message.channel.send(`${emojis.youtube} **YouTube task!**:\nWrite the following word!\n${word}`)
       try {
         const collected = await message.channel.awaitMessages(filter, {
           max: 1,
@@ -218,103 +219,15 @@ module.exports = {
 
    // aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-   
 
-    const randomGame = `${Math.floor(Math.random() * 4)}`
-
-    if (randomGame === '0') {
-      const ogWord = randomWords({
-        exactly: 1
-      })
-      let word = '';
-      ogWord.forEach(letter => {
-        word += '`' + letter.split('').join(' ') + '` '
-      })
-      const msg = await message.channel.send(`${emojis.YouTube} **YouTube task!**:\nWrite the following word!\n${word}`)
-      try {
-        const collected = await message.channel.awaitMessages(filter, {
-          max: 1,
-          time: 5000,
-          errors: ['time']
-        })
-        if (collected.first().content.toLowerCase() === ogWord.join(' ')) {
-          msg.delete()
-          collected.first().delete()
-          Upload()
-        } else return message.channel.send('You lose!')
-      } catch (ex) {
-        return message.channel.send('Time\'s up!')
-      }
-    } else if (randomGame === '1') {
-      const msg1 = await message.channel.send(`${emojis.youtube} **YouTube task!**:\nWrite the name of this server\'s owner!`)
-      try {
-        const collected1 = await message.channel.awaitMessages(filter, {
-          max: 1,
-          time: 5000,
-          errors: ['time']
-        })
-        const owner = await message.guild.members.fetch(message.guild.ownerID)
-        if (!collected1.first()) return
-        if (collected1.first().content.toLowerCase() === owner.displayName.toLowerCase() || collected1.first().content.toLowerCase() === owner.user.username.toLowerCase()) {
-          msg1.delete()
-          collected1.first().delete()
-          Upload()
-        } else return message.channel.send(`You lose!\nThe answer was ${owner.displayName}`)
-      } catch (ex) {
-        console.log(ex)
-        const owner = await message.guild.members.fetch(message.guild.ownerID)
-        return message.channel.send(`Time\'s up!\nThe answer was ${owner.displayName}!`)
-      }
-    } else if (randomGame === '2') {
-      const socials = [`${emojis.youtube}`, 'youtube', `${emojis.twitter}`, 'twitter', `${emojis.instagram}`, 'instagram', `${emojis.twitch}`, 'twitch']
-      const nums = [0, 2, 4, 6]
-      const randomSocial = nums[Math.floor(Math.random() * nums.length)]
-      const msg2 = await message.channel.send(`${emojis.youtube} **YouTube task!**:\nWrite the name of this social media!\n${socials[randomSocial]}`)
-      try {
-        const collected2 = await message.channel.awaitMessages(filter, {
-          max: 1,
-          time: 5000,
-          errors: ['time']
-        })
-        if (!collected2.first()) return
-        if (collected2.first().content.toLowerCase() === socials[randomSocial + 1]) {
-          msg2.delete()
-          collected2.first().delete()
-          Upload()
-        } else return message.channel.send(`You lose!\nThe word was ${socials[randomSocial + 1]}!`)
-      } catch (ex) {
-        console.log(ex)
-        return message.channel.send(`Time\'s up!\nThe word was ${socials[randomSocial + 1]}!`)
-      }
-    } else if (randomGame === '3') {
-      const words = ['youtube', 'twitter', 'twitch', 'instagram', 'leighton', 'media', 'social', 'camera', 'post', 'follower', 'subscribe']
-      const randomWord = words[Math.floor(Math.random() * words.length)]
-      const msg2 = await message.channel.send(`${emojis.youtube} **YouTube task!**:\nUnscramble the following word! (Social media related!):\n\n${scramble.scramble(randomWord)}`)
-      try {
-        const collected2 = await message.channel.awaitMessages(filter, {
-          max: 1,
-          time: 10000,
-          errors: ['time']
-        })
-        if (!collected2.first()) return
-        if (collected2.first().content.toLowerCase() === randomWord) {
-          msg2.delete()
-          collected2.first().delete()
-          Upload()
-        } else return message.channel.send(`You lose!\nThe word was ${randomWord}`)
-      } catch (ex) {
-        console.log(ex)
-        return message.channel.send(`Time\'s up!\nThe word was ${randomWord}`)
-      }
-    }
-    return
-    } else {
-        let tomorrow = dataCooldown.time + 1000 * 60 * 40
+     
+  } else {
+    let tomorrow = dataCooldown.time + 1000 * 60 * 40
         let now = Date.now()
 
         let converted = convert(tomorrow, now, '-', 2)
 
-                    let days = converted[0]
+        let days = converted[0]
                     let hours = converted[1]
                     let minutes = converted[2]
                     let seconds = converted[3]
@@ -354,10 +267,5 @@ module.exports = {
 
                     words.forEach(word => final = final.trim() + word.trim() + 'z')
 
-        return message.channel.send(`You have already uploaded!\nWait${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}more to execute this command again!`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
-    }
-       
-
-  }
-  },
-};
+        return message.channel.send(`You have already uploaded!\nWait${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ')}more to execute this command again!`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
+  }}}}
