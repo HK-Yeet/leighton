@@ -2,6 +2,8 @@ const Schema = require('../schemas/posts')
 const Discord = require('discord.js')
 module.exports = {
     name: "posts",
+    description: 'Get a full list of your posts\' ids!',
+    category: 'Social Media 2',
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
