@@ -5,6 +5,8 @@ const { coin } = require('../objects/emojis.json')
 
 module.exports = {
     name: "profile",
+    description: 'View yours or someone else\'s user card!',
+    category: 'Social Media',
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
         let person;
