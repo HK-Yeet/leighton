@@ -26,7 +26,7 @@ module.exports = {
         let dataCooldown = await database.ref(`Cooldowns/Upload/${message.author.id}`).once('value')
         dataCooldown = dataCooldown.val()
 
-        if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 30) {
+        if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 10) {
 
     await database.ref(`Cooldowns/Tweet/${message.author.id}`).remove()
 
@@ -285,7 +285,7 @@ module.exports = {
                 return message.channel.send(`Time\'s up!\nThe word was ${randomWord}`)
             }}
         } else {
-        let tomorrow = dataCooldown.time + 1000 * 60 * 30
+        let tomorrow = dataCooldown.time + 1000 * 60 * 10
         let now = Date.now()
 
         let converted = convert(tomorrow, now, '-', 2)

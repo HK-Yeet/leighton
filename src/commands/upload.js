@@ -24,7 +24,7 @@ module.exports = {
         let dataCooldown = await database.ref(`Cooldowns/Upload/${message.author.id}`).once('value')
         dataCooldown = dataCooldown.val()
 
-    if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 40) {
+    if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 10) {
 
     await database.ref(`Cooldowns/Upload/${message.author.id}`).remove()
     
@@ -222,7 +222,7 @@ module.exports = {
 
      
   } else {
-    let tomorrow = dataCooldown.time + 1000 * 60 * 40
+    let tomorrow = dataCooldown.time + 1000 * 60 * 10
         let now = Date.now()
 
         let converted = convert(tomorrow, now, '-', 2)
