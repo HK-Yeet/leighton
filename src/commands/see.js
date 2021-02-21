@@ -2,6 +2,8 @@ const { MessageEmbed } = require("discord.js");
 
 module.exports = {
     name: "see",
+    description: 'View a tweet by ID!',
+    category: 'Social Media 2',
     aliases: ["explore"],
     cooldown: 5, //in seconds
     minArgs: 1, 
