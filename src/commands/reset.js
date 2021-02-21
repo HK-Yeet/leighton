@@ -4,6 +4,8 @@ const { coin } = require('../objects/emojis.json')
 
 module.exports = {
     name: "reset",
+    description: 'Restart your account from scratch',
+    category: 'Social Media',
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
