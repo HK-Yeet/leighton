@@ -3,6 +3,8 @@ const { coin } = require('../objects/emojis.json')
 const schema = require('../schemas/posts')
 module.exports = {
     name: "random",
+    description: 'Get a random tweet!',
+    category: 'Social Media 2',
     aliases: ["rand"],
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
