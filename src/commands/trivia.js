@@ -84,7 +84,7 @@ module.exports = {
       let loss = new MessageEmbed()
       .setTitle(questions[rand])
       .setColor("RED")
-      .setDescription(`Looks like nobody got it this time. The correct answer is: ${answers[rand]}`)
+      .setDescription(`Looks like nobody got it this time. The correct answer is: ${answers[rand]}\nThe answer was: ${answers[rand].toUpperCase()}`)
       m.edit(loss)
     }}
   },
