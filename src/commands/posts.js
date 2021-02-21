@@ -7,7 +7,7 @@ module.exports = {
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
-        let person;
+      let person;
         if(message.mentions == true) {
             person = message.mentions.users.first().id
             console.log(person)

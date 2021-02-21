@@ -1,4 +1,5 @@
 const schema = require('../schemas/posts')
+const schema2 = require('../schemas/items')
 const Discord = require('discord.js')
 const { coin } = require('../objects/emojis.json')
 
@@ -14,6 +15,8 @@ module.exports = {
         
         if(!account) return message.channel.send("You don't have an account created")
         const filter = m => m.author.id === message.author.id
+
+        message.channel.send('Type `yes` or `no`')
         
         do {
             
@@ -26,7 +29,7 @@ module.exports = {
                 entry = collected.first().content.toLowerCase()
                 if (entry === 'yes') {
 
-                    let msg = await message.channel.send('Deleting everything <\\:bear:810989681532600380>')
+                    let msg = await message.channel.send('Deleting everything <:bearr:810989681532600380>')
 
                     await database.ref(`Profiles/${message.author.id}`).remove()
                     await database.ref(`Cooldowns/Daily/${message.author.id}`).remove()
@@ -34,8 +37,12 @@ module.exports = {
                     await database.ref(`Cooldowns/Upload/${message.author.id}`).remove()
                     let results = await schema.findOne({ _id: message.author.id })
                     if(!results) return
-                    if(!results.post || results.post.length <= 0) return
                     results.post.forEach(async p => { await database.ref(`Posts/${p}`).remove() })
+                    await schema.findOneAndDelete({ _id: message.author.id })
+                    let resultss = await schema.findOne({ _id: message.author.id })
+                    if(!resultss) return
+                    await schema2.findOneAndDelete({ _id: message.author.id })
+                   
                     
                     msg.edit('Deleted! 😳')
                     

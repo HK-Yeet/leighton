@@ -3,7 +3,7 @@ module.exports = {
     name: "sign-up",
     description: 'Sign up with your own account!',
     category: 'Social Media',
-    aliases: ["log-in", "sign-up", "log-in"],
+    aliases: ["log-in", "signup", "login"],
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
 
