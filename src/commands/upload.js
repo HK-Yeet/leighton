@@ -102,7 +102,7 @@ module.exports = {
           message.channel.send(epic, attachment)
           setTimeout(async () => {
             if (likes > dislikes) {
-              const subsGain = Math.floor(Math.random() * (likes < 50 ? 16 : (likes < 70 ? 21 : (likes < 90 ? 41 : 61)))) + (likes < 50 ? 5 : 20)
+              const subsGain = Math.floor(Math.random() * (likes < 50 ? 16 : (likes < 70 ? 21 : (likes < 90 ? 41 : 61))) + (likes < 50 ? 5 : 20))
               let extraCoins = Math.floor(Math.random() * (70 - 40)) + 40
 
               await database.ref(`Profiles/${message.author.id}`).update({

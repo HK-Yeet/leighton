@@ -72,7 +72,7 @@ module.exports = {
 
                     words.forEach(word => final = final.trim() + word.trim() + 'z')
 
-        return message.channel.send(`You have already claimed your reward!\nWait more ${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}to execute this command again!`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
+        return message.channel.send(`You have already claimed your reward!\nWait ${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ')}more to execute this command again!`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
     }
 
 

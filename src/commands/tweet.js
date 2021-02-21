@@ -8,13 +8,13 @@ const scramble = require('wordscramble')
 const schema = require('../schemas/posts')
 const gameSchema = require('../schemas/items')
 const { coin } = require('../objects/emojis.json')
+const convert = require('../functions/dates')
 
 module.exports = {
     name: "tweet",
     aliases: ["twitter", "post"],
     category: 'Social Media',
     description: 'Upload a tweet to Twitter!\nWatch out, not tweeting at least once a day will make you lose followers!',
-    cooldown: 60 * 5,
     clientPerms: ["SEND_MESSAGES"],
     callback: async (bot, message, args, hkandler, database) => {
 
@@ -22,6 +22,13 @@ module.exports = {
         account = account.val()
         
         if(!account) return message.channel.send("You don't have an account created")
+
+        let dataCooldown = await database.ref(`Cooldowns/Upload/${message.author.id}`).once('value')
+        dataCooldown = dataCooldown.val()
+
+        if(!dataCooldown || Date.now() >= dataCooldown.time + 1000 * 60 * 30) {
+
+    await database.ref(`Cooldowns/Tweet/${message.author.id}`).remove()
 
         const filter = m => m.author.id === message.author.id
         const author = message.author
@@ -276,7 +283,54 @@ module.exports = {
             } catch (ex) {
                 console.log(ex)
                 return message.channel.send(`Time\'s up!\nThe word was ${randomWord}`)
-            }
+            }}
+        } else {
+        let tomorrow = dataCooldown.time + 1000 * 60 * 30
+        let now = Date.now()
+
+        let converted = convert(tomorrow, now, '-', 2)
+
+        let days = converted[0]
+                    let hours = converted[1]
+                    let minutes = converted[2]
+                    let seconds = converted[3]
+
+                    let dias = 'days'
+                    let horas = 'hours'
+                    let minutos = 'minutes'
+                    let segundos = 'seconds'
+
+                    if(days <= 0) {
+                        days = '' 
+                        dias = ''
+                    }
+                    if(days == 1) dias = 'day'
+
+                    if(hours <= 0) {
+                        hours = '' 
+                        horas = ''
+                    }
+                    if(hours == 1) horas = 'hour'
+
+                    if(minutes <= 0) {
+                        minutes = '' 
+                        minutos = ''
+                    }
+                    if(minutes == 1) minutos = 'minute'
+
+                    if(seconds <= 0) {
+                        seconds = '' 
+                        segundos = ''
+                    }
+                    if(seconds == 1) segundos = 'second'
+
+                    let words = [days, dias, hours, horas, minutes, minutos, seconds, segundos]
+                   
+                    let final = ''
+
+                    words.forEach(word => final = final.trim() + word.trim() + 'z')
+
+        return message.channel.send(`You have already tweeted!\nWait${final.replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('z', ' ').replace('  ', ' ')}more to execute this command again!`) // we don't want 23 hours   12 seconds we want 23 hours 12 seconds
         }
     },
 };
