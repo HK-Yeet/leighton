@@ -61,7 +61,7 @@ const connect = (param = 'Empty') => {
     .setOwners(owners)
     .setDefaultCooldown(2) //5 is default 
     // NOTE FROM CANNON: i changed cooldown of 3 to 2
-    .setHelpDescription("Imagine needing help lmao");
+        .setHelpDescription("**Welcome to Leighton**\n\nThe following bot you're about to experience is a project constructed by __The Smooth Brain Devs__ for the Worn Off Keys February Competition.\nThe bot is constructed over the idea of a \"YouTuber's Life\" simulator, that would fully simulate your way to becoming a successful YouTuber over Discord!\n\nFor a list of all of the commands and their uses, click the buttons below!\nTyping \"!help (command)\" would give you information specifically about the command you're looking for.\n\nHave fun!");
 
 
     client.login(tok).catch((err) => console.log('\x1b[31mAre you sure you put your name in index.js?\x1b[0m   \n' + err))
