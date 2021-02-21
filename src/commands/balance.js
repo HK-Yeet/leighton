@@ -2,6 +2,8 @@ const Discord = require('discord.js')
 const { coin } = require('../objects/emojis.json')
 module.exports = {
     name: "balance",
+    description: 'Check your balance!',
+    category: 'Economy',
     aliases: ["bal"],
     clientPerms: ["SEND_MESSAGES"],
     callback: async (client, message, args, hkandler, database) => {
